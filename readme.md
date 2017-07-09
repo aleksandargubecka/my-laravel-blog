@@ -1,0 +1,1 @@
+This is a simple laravel blog, for my personal web site. 
