@@ -9,6 +9,8 @@
 
 <div class="container">
 
+    @include('partials/_messages')
+
     @yield('content')
 
     @include('partials/_footer')
@@ -17,5 +19,5 @@
 
 @include('partials/_javascripts')
 @yield('scripts')
-
+</body>
 </html>

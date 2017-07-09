@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Post;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -13,7 +15,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::all();
+        return view('posts/index')->with('posts', $posts);
     }
 
     /**
@@ -23,7 +26,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('posts/create');
     }
 
     /**
@@ -34,7 +37,21 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, array(
+            'title' => 'required|max:255',
+            'body' => 'required',
+        ));
+
+        $post = new Post;
+
+        $post->title = $request->title;
+        $post->body = $request->body;
+
+        $post->save();
+
+        $request->session()->flash('success', 'The blog post was successfully saved.');
+
+        return redirect()->route('posts.show', $post->id);
     }
 
     /**
@@ -45,7 +62,8 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        //
+        $post = Post::find($id);
+        return view("posts/show")->with('post', $post);
     }
 
     /**
@@ -56,7 +74,8 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post = Post::find($id);
+        return view("posts/edit")->with('post', $post);
     }
 
     /**
@@ -68,7 +87,21 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, array(
+            'title' => 'required|max:255',
+            'body' => 'required',
+        ));
+
+        $post =  Post::find($id);
+
+        $post->title = $request->input('title');
+        $post->body = $request->input('body');
+
+        $post->save();
+
+        $request->session()->flash('success', 'The blog post was successfully saved.');
+
+        return redirect()->route('posts.show', $post->id);
     }
 
     /**
