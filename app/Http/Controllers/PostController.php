@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Post;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -15,7 +14,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
+        $posts = Post::orderBy('id', 'desc')->paginate(5);
         return view('posts/index')->with('posts', $posts);
     }
 
@@ -39,6 +38,7 @@ class PostController extends Controller
     {
         $this->validate($request, array(
             'title' => 'required|max:255',
+            'slug' => 'required|max:255|min:5|alpha_dash',
             'body' => 'required',
         ));
 
@@ -46,6 +46,7 @@ class PostController extends Controller
 
         $post->title = $request->title;
         $post->body = $request->body;
+        $post->slug = $request->slug;
 
         $post->save();
 
@@ -89,12 +90,14 @@ class PostController extends Controller
     {
         $this->validate($request, array(
             'title' => 'required|max:255',
-            'body' => 'required',
+            'slug'  => 'required|alpha_dash|min:5|max:255|unique:posts,slug',
+            'body'  => 'required',
         ));
 
         $post =  Post::find($id);
 
         $post->title = $request->input('title');
+        $post->slug = $request->input('slug');
         $post->body = $request->input('body');
 
         $post->save();
@@ -112,6 +115,7 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Post::destroy($id);
+        return redirect()->route('posts.index')->with('success', 'The blog post was successfully deleted.');
     }
 }

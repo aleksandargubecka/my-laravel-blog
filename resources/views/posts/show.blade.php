@@ -15,12 +15,16 @@
         <div class="col-md-4">
             <div class="well">
                 <dl class="dl-horizontal">
-                    <dt>Created At:</dt>
-                    <dd>{{ date('j. M, Y. - H:i', strtotime( $post->created_at ))  }}</dd>
+                    <label>Slug:</label>
+                    <p><a href="{{ url($post->slug) }}">{{ url($post->slug) }}</a></p>
                 </dl>
                 <dl class="dl-horizontal">
-                    <dt>Last Updated:</dt>
-                    <dd>{{ date('j. M, Y. - H:i', strtotime( $post->updated_at )) }}</dd>
+                    <label>Created At:</label>
+                    <p>{{ date('j. M, Y. - H:i', strtotime( $post->created_at ))  }}</p>
+                </dl>
+                <dl class="dl-horizontal">
+                    <label>Last Updated:</label>
+                    <p>{{ date('j. M, Y. - H:i', strtotime( $post->updated_at )) }}</p>
                 </dl>
                 <hr>
                 <div class="row">
@@ -28,7 +32,15 @@
                         <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-primary btn-block">Edit</a>
                     </div>
                     <div class="col-md-6">
-                        <a href="{{ route('posts.destroy',  $post->id)}}" class="btn btn-danger btn-block">Delete</a>
+                        <form method="post" action="{{ route('posts.destroy',  $post->id)}}">
+                            {{ csrf_field() }}
+                            {{ method_field('DELETE') }}
+                            <button class="btn btn-danger btn-block" type="submit">Delete</button>
+                        </form>
+                    </div>
+                    <div class="col-md-12">
+                        <br>
+                        <a href="{{ route('posts.index') }}" class="btn btn-default btn-block"><< See all posts</a>
                     </div>
                 </div>
             </div>

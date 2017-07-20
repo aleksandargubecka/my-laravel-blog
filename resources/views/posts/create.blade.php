@@ -18,6 +18,10 @@
                     <input type="text" class="form-control" id="title" name="title" placeholder="Title" required maxlength="140">
                 </div>
                 <div class="form-group">
+                    <label for="slug">Slug:</label>
+                    <input type="text" class="form-control" id="slug" name="slug" placeholder="Slug" required maxlength="140">
+                </div>
+                <div class="form-group">
                     <label for="body">Post body:</label>
                     <textarea class="form-control" id="body" name="body" placeholder="Body text..." required></textarea>
                 </div>

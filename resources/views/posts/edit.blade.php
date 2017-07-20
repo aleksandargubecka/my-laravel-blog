@@ -19,6 +19,11 @@
                            maxlength="140" value="{{$post->title}}">
                 </div>
                 <div class="form-group">
+                    <label for="slug">Slug:</label>
+                    <input type="text" class="form-control input-lg" id="slug" name="slug" placeholder="Slug" required
+                           maxlength="140" value="{{$post->slug}}">
+                </div>
+                <div class="form-group">
                     <label for="body" class="form-spacing-top">Post body:</label>
                     <textarea class="form-control" id="body" name="body" placeholder="Body text..."
                               required>{{ $post->body }}</textarea>
@@ -41,6 +46,10 @@
                         </div>
                         <div class="col-md-6">
                             <input type="submit" class="btn btn-success btn-block" value="Save">
+                        </div>
+                        <div class="col-md-12">
+                            <br>
+                            <a href="{{ route('posts.index') }}" class="btn btn-default btn-block"><< See all posts</a>
                         </div>
                     </div>
                 </div>

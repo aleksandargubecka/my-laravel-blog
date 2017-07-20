@@ -12,6 +12,7 @@
 */
 
 Route::get('/', "PagesController@getIndex");
+Route::get('/single/{id}', "PagesController@single");
 
 Route::get('/about', "PagesController@getAbout");
 
