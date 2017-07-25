@@ -8,6 +8,15 @@ use Illuminate\Http\Request;
 class PostController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -31,7 +40,7 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -58,7 +67,7 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -70,7 +79,7 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -82,19 +91,25 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, array(
-            'title' => 'required|max:255',
-            'slug'  => 'required|alpha_dash|min:5|max:255|unique:posts,slug',
-            'body'  => 'required',
-        ));
+        $post = Post::find($id);
 
-        $post =  Post::find($id);
+        $validation = array(
+            'title' => 'required|max:255',
+            'body' => 'required',
+        );
+
+        if($request->input('slug') != $post->slug)
+            $validation['slug'] = 'required|alpha_dash|min:5|max:255|unique:posts,slug';
+
+        $this->validate($request, $validation);
+
+        $post = Post::find($id);
 
         $post->title = $request->input('title');
         $post->slug = $request->input('slug');
@@ -110,7 +125,7 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
