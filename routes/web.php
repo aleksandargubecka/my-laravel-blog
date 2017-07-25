@@ -23,4 +23,4 @@ Route::get('contact', "PagesController@getContact");
 Route::resource('posts', 'PostController');
 Auth::routes();
 
-Route::get('/blogadmin', 'AdminController@index')->name('home');
+Route::get('/blogadmin', ['uses' => 'AdminController@index', 'as' => 'blogadmin.index']);
