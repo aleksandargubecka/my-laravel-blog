@@ -16,7 +16,7 @@
             <div class="well">
                 <dl class="dl-horizontal">
                     <label>Slug:</label>
-                    <p><a href="{{ route('blog.single', $post->slug) }}">{{ route('blog.single', $post->slug) }}</a></p>
+                    <p><a target="_blank" href="{{ route('blog.single', $post->slug) }}">{{ route('blog.single', $post->slug) }}</a></p>
                 </dl>
                 <dl class="dl-horizontal">
                     <label>Created At:</label>
