@@ -4,6 +4,7 @@
 
 @section('stylesheets')
     <link rel="stylesheet" href="/css/vendor/parsley.css">
+    <link rel="stylesheet" href="/css/vendor/select2.min.css">
 @endsection
 
 @section('content')
@@ -28,6 +29,14 @@
                     <select name="category_id" id="category_id" class="form-control">
                         @foreach($categories as $category)
                             <option value="{{$category->id}}" {{ ($category->id === $post->category_id) ? 'selected' : '' }}>{{$category->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="tags">Tags:</label>
+                    <select class="form-control select2-multi" id="tags" name="tags[]" multiple="multiple">
+                        @foreach($tags as $tag)
+                            <option value="{{$tag->id}}" {{ (in_array($tag->id, $post->tags()->pluck('tag_id')->toArray())) ? 'selected' : '' }}>{{$tag->name}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -69,4 +78,11 @@
 
 @section('scripts')
     <script src="/js/vendor/parsley.min.js" type="text/javascript"></script>
+    <script src="/js/vendor/select2.min.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(".select2-multi").select2();
+        });
+    </script>
 @endsection

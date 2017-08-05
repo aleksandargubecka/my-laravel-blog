@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\Post;
+use App\Tag;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -36,7 +37,10 @@ class PostController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('posts/create')->with('categories', $categories);
+        $tags = Tag::all();
+        return view('posts/create')
+            ->with('categories', $categories)
+            ->with('tags', $tags);
     }
 
     /**
@@ -63,6 +67,8 @@ class PostController extends Controller
 
         $post->save();
 
+        $post->tags()->sync($request->tags, false);
+
         $request->session()->flash('success', 'The blog post was successfully saved.');
 
         return redirect()->route('posts.show', $post->id);
@@ -77,7 +83,9 @@ class PostController extends Controller
     public function show($id)
     {
         $post = Post::find($id);
-        return view("posts/show")->with('post', $post);
+        return view("posts/show")
+            ->with('post', $post);
+
     }
 
     /**
@@ -90,7 +98,11 @@ class PostController extends Controller
     {
         $post = Post::find($id);
         $categories = Category::all();
-        return view("posts/edit")->with('post', $post)->with('categories', $categories);
+        $tags = Tag::all();
+        return view("posts/edit")
+            ->with('post', $post)
+            ->with('categories', $categories)
+            ->with('tags', $tags);
     }
 
     /**
@@ -107,6 +119,7 @@ class PostController extends Controller
         $validation = array(
             'title' => 'required|max:255',
             'body' => 'required',
+            'category_id' => 'required|integer',
         );
 
         if($request->input('slug') != $post->slug)
@@ -114,12 +127,12 @@ class PostController extends Controller
 
         $this->validate($request, $validation);
 
-        $post = Post::find($id);
-
         $post->title = $request->input('title');
         $post->slug = $request->input('slug');
         $post->category_id = $request->input('category_id');
         $post->body = $request->input('body');
+
+        $post->tags()->sync($request->tags);
 
         $post->save();
 
@@ -136,7 +149,9 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        Post::destroy($id);
+        $post = Post::find($id);
+        $post->tags()->detach();
+        $post->delete();
         return redirect()->route('posts.index')->with('success', 'The blog post was successfully deleted.');
     }
 }

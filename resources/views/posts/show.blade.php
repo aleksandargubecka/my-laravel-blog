@@ -11,12 +11,18 @@
 
             <p class="lead">{{ $post->body }}</p>
 
+            <div class="tags">
+                @foreach($post->tags as $tag)
+                    <a href="{{ route('tags.show', $tag->id) }}" class="label label-default">{{ $tag->name }}</a>
+                @endforeach
+            </div>
         </div>
         <div class="col-md-4">
             <div class="well">
                 <dl class="dl-horizontal">
                     <label>Slug:</label>
-                    <p><a target="_blank" href="{{ route('blog.single', $post->slug) }}">{{ route('blog.single', $post->slug) }}</a></p>
+                    <p><a target="_blank"
+                          href="{{ route('blog.single', $post->slug) }}">{{ route('blog.single', $post->slug) }}</a></p>
                 </dl>
                 <dl class="dl-horizontal">
                     <label>Category:</label>
