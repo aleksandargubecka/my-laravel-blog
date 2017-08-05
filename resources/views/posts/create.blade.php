@@ -15,11 +15,21 @@
                 {{ csrf_field() }}
                 <div class="form-group">
                     <label for="title">Title:</label>
-                    <input type="text" class="form-control" id="title" name="title" placeholder="Title" required maxlength="140">
+                    <input type="text" class="form-control" id="title" name="title" placeholder="Title" required
+                           maxlength="140">
                 </div>
                 <div class="form-group">
                     <label for="slug">Slug:</label>
-                    <input type="text" class="form-control" id="slug" name="slug" placeholder="Slug" required maxlength="140">
+                    <input type="text" class="form-control" id="slug" name="slug" placeholder="Slug" required
+                           maxlength="140">
+                </div>
+                <div class="form-group">
+                    <label for="category_id">Category:</label>
+                    <select name="category_id" id="category_id" class="form-control">
+                        @foreach($categories as $category)
+                            <option value="{{$category->id}}">{{$category->name}}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="body">Post body:</label>
