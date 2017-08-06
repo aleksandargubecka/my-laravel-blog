@@ -13,4 +13,47 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h3 class="comments-title"><span class="glyphicon glyphicon-comment"></span>  {{ $post->comments()->count() }} Comments</h3>
+        @foreach($post->comments as $comment)
+                <div class="author-info">
+
+                    <img src="{{ "https://www.gravatar.com/avatar/" . md5(strtolower(trim($comment->email))) . "?s=50&d=monsterid" }}" class="author-image">
+                    <div class="author-name">
+                        <h4>{{ $comment->name }}</h4>
+                        <p class="author-time">{{ date('F dS, Y - g:iA' ,strtotime($comment->created_at)) }}</p>
+                    </div>
+
+                </div>
+                <div class="comment-content"><strong>Comment:</strong> {{ $comment->comment }}</div>
+            @endforeach
+        </div>
+    </div>
+
+    <div class="row">
+        <div id="comment-form" class="col-md-8 col-md-offset-2">
+            <form method="post" action="{{ route('comments.store', $post->id) }}">
+                {{ csrf_field() }}
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="name">Name:</label>
+                        <input type="text" class="form-control" name="name" id="name">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="email">Email:</label>
+                        <input type="text" class="form-control" name="email" id="email">
+                        <br>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="comment">Comment:</label>
+                        <textarea class="form-control" name="comment" id="comment"></textarea>
+                        <br>
+                        <button class="btn btn-success pull-right">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 @endsection
